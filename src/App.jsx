@@ -1,26 +1,41 @@
 import "./App.css";
-import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 function App() {
-  const [text, setText] = useState("");
+  // formik hook
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      country: "Nepal",
+      terms: "",
+    },
+    // validate form with yup
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .max(20, "Must be 20 characters or less")
+        .required("Name is required"),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      terms: Yup.array().required("Terms is required"),
+    }),
 
-  const onChangeHandler = (event) => {
-    console.log(event.target.value);
-    setText(event.target.value);
-  };
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
+  console.log(formik.errors);
+
   return (
     <>
-      {/* <div>
-        <input
-          onChange={onChangeHandler}
-          type="text"
-          className="border border-black"
-        />
-        <h2>{text}</h2>
-      </div> */}
-
       <main className="h-screen flex items-center justify-center">
-        <form className="bg-white flex rounded-lg w-1/2">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="bg-white flex rounded-lg w-1/2"
+        >
           <div className="flex-1 text-gray-700 p-20">
             <h1 className="text-3xl pb-2">Let's Start</h1>
             <p className="text-lg text-gray-500">
@@ -30,16 +45,25 @@ function App() {
               {/* name */}
               <div className="pb-4">
                 <label
-                  className="block font-semibold text-sm pb-2"
+                  className={`block font-semibold text-sm pb-2 ${
+                    formik.touched.name && formik.errors.name
+                      ? "text-red-500"
+                      : ""
+                  }`}
                   htmlFor="name"
                 >
-                  Name
+                  {formik.touched.name && formik.errors.name
+                    ? formik.errors.name
+                    : "Name"}
                 </label>
                 <input
                   className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500"
                   type="text"
                   name="name"
                   placeholder="Enter name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
               </div>
             </div>
@@ -47,16 +71,25 @@ function App() {
               {/* email */}
               <div className="pb-4">
                 <label
-                  className="block font-semibold text-sm pb-2"
+                  className={`block font-semibold text-sm pb-2 ${
+                    formik.touched.email && formik.errors.email
+                      ? "text-red-500"
+                      : ""
+                  }`}
                   htmlFor="email"
                 >
-                  Name
+                  {formik.touched.email && formik.errors.email
+                    ? formik.errors.email
+                    : "Email"}
                 </label>
                 <input
                   className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500"
                   type="email"
                   name="email"
                   placeholder="Enter email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
               </div>
             </div>
@@ -67,9 +100,11 @@ function App() {
                   className="block font-semibold text-sm pb-2"
                   htmlFor="country"
                 >
-                  Name
+                  Country
                 </label>
                 <select
+                  value={formik.values.country}
+                  onChange={formik.handleChange}
                   name="country"
                   className="border-2 border-gray-500 p-2 rounded-md w-1/2 focus:border-teal-500 focus:ring-teal-500"
                 >
@@ -86,17 +121,24 @@ function App() {
               {/* terms */}
               <div className="pb-4">
                 <label
-                  className="block font-semibold text-sm pb-2"
+                  className={`block font-semibold text-sm pb-2 ${
+                    formik.touched.terms && formik.errors.terms
+                      ? "text-red-500"
+                      : ""
+                  }`}
                   htmlFor="terms"
                 >
-                  Terms of service
+                  {formik.touched.terms && formik.errors.terms
+                    ? formik.errors.terms
+                    : "Terms of service"}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
                     className=" h-5 w-5 text-teal-500 border-2 focus:border-teal-500 focus:ring-teal-500"
                     type="checkbox"
                     name="terms"
-                    value="checked"
+                    value={formik.values.terms}
+                    onChange={formik.handleChange}
                   />
                   <p className="text-sm font-semibold">
                     I agree for the service.{" "}
