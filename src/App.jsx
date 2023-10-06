@@ -19,7 +19,7 @@ function App() {
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
-      terms: Yup.array().required("Terms is required"),
+      terms: Yup.string().required("Terms of service is required"),
     }),
 
     onSubmit: (values) => {
