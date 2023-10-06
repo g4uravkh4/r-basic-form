@@ -8,7 +8,8 @@ function SuccessPage() {
           Thank you for submitting your details.
         </h1>
         <p className="text-lg text-gray-500">
-          Thank you 😊. We will get back to you soon.
+          Hi 😊. Thank you for submitting the form. We will get back to you
+          soon.
         </p>
       </div>
     </main>

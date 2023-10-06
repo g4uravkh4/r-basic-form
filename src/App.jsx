@@ -1,8 +1,10 @@
 import "./App.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
   // formik hook
   const formik = useFormik({
     initialValues: {
@@ -24,10 +26,12 @@ function App() {
 
     onSubmit: (values) => {
       console.log(values);
+      navigate({
+        pathname: "/success",
+        state: values,
+      });
     },
   });
-
-  console.log(formik.errors);
 
   return (
     <>
@@ -146,6 +150,9 @@ function App() {
                 </div>
               </div>
               <button
+                // onClick={() => {
+                //   navigate("/success");
+                // }}
                 type="submit"
                 className="bg-teal-500 text-sm font-semibold text-white py-3 mt-6 rounded-lg w-full"
               >
